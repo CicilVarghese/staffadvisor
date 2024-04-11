@@ -1,0 +1,30 @@
+
+router.get('/', function(req, res, next) {
+ 
+
+  staffHelper.getDepartmentDetails(1)
+    .then((department) => {
+      // Render the view with the department details
+      // res.render('department', { department: department });
+      console.log(department);
+    })
+    .catch((error) => {
+      // Handle error
+      console.error('Error fetching department details:', error);
+     // res.status(500).send('Error fetching department details');
+    });
+
+    res.render('index', { title: 'Express' });
+
+  // // Example usage of the query function
+  // query('SELECT * FROM departments')
+  //   .then(({ results, fields }) => {
+  //     // Process results here
+  //     console.log(results);
+  //   })
+  //   .catch((error) => {
+  //     // Handle error
+  //     console.error('Error executing query:', error);
+  //   });
+  
+});
