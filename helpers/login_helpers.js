@@ -1,8 +1,8 @@
 const { query } = require('../db/database');
 
 function doLogin(userData) {
-    const sql = 'SELECT * FROM users WHERE username = ? AND password = ? AND role = ? ';
-    const values = [userData.username, userData.password, 'Advisor'];
+    const sql = 'SELECT * FROM users WHERE userid = ? AND password = ?';
+    const values = [userData.userid, userData.password];
   
     return new Promise((resolve, reject) => {
         query(sql, values)
@@ -14,7 +14,7 @@ function doLogin(userData) {
                     console.log("Login success");
                     resolve({ status: true, user: user });
                 } else {
-                    console.log("Login failed: User not found or incorrect username/password");
+                    console.log("Login failed: User not found or incorrect userid/password");
                     resolve({ status: false });
                 }
             })

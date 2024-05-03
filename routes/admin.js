@@ -2,23 +2,30 @@ var express = require('express');
 var router = express.Router();
 const db = require('../db/database');
 const { query } = require('../db/database');
+const { verifyLogin } = require('../routes/home');
 var adminHelper= require('../helpers/admin-helpers');
 const { log } = require('handlebars');
+var homeRouter = require('../routes/home');
 
 /* GET users listing. */
-router.get('/login', function(req, res, next) {
-res.render('admin/login')
+
+
+router.get('/',verifyLogin, async function(req, res, next) {
+    try {
+        const adminData = await adminHelper.getAdminData(req.session.user);
+        const allAdvisors = await adminHelper.getAllAdvisors();
+        const allFaculties =await adminHelper.getAllFaculties();
+        console.log(allFaculties)
+        res.render('admin/portal', { Admin: true, user: adminData.details, allAdvisors,allFaculties });
+    } catch (err) {
+        console.error("Error:", err);
+        res.status(500).send("An error occurred.");
+    }
 });
 
-router.post('/login',(req,res)=>{
-  adminHelper.doLogin(req.body).then((response)=>{
-    if(response.status){
-      res.send('Succesfuly login');
-    }
-    else{
-      res.render('admin/login')
-    }
 
-  })
-})
+
+
+
+ 
 module.exports = router;

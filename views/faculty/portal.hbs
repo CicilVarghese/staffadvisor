@@ -1,0 +1,60 @@
+
+    <section id="sign_in-section" style="padding-top: 12em;">
+        <div class="container">
+            <div><h1 class="text-center">STUDENT DETAILS</h1></div><hr>
+            <div class="row">
+                <div class="col-md-3 mt-3">
+                    <label for="exampleInputName1"><i>DEPT_NAME</i></label>
+                    <input type="text" class="form-control" id="exampleInputName1">
+                </div>
+                <div class="col-md-3 mt-3">
+                    <label for="exampleInputName1"><i>SEMESTER</i></label>
+                    <input type="text" class="form-control" id="exampleInputName1">
+                </div>
+                <div class="col-md-3 mt-3">
+                    <label for="exampleInputName1"><i>COURSE</i></label>
+                    <input type="text" class="form-control" id="exampleInputName1">
+                </div>
+                <div class="col-md-3 mt-3">
+                    <label for="exampleInputName1"><i>SEARCH STUDENT</i></label>
+                    <input type="text" class="form-control" id="exampleInputName1">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-9">
+                    <div class="table mt-5">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">REG.NO</th>
+                                <th scope="col">NAME</th>
+                                <th scope="col">DEPT</th>
+                                <th scope="col">SEM</th>
+                                <th scope="col">COURSE</th>
+                                <th scope="col">INTERNAL</th>
+                                <th scope="col">ATTENDANCE</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {{#each allStudents.details}}
+                              <tr>
+                                <th scope="row">{{this.student_id}}</th>
+                                <td>{{this.student_name}}</td>
+                                <td>{{this.department_id}}</td>
+                                <td>{{this.semester_id}}</td>
+                                <td>{{this.course_name}}</td>
+                                <td>{{this.total_marks}}</td>
+                                <td>{{this.attendance}}</td>
+                              </tr>
+                              {{/each}}
+                             
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+              
+        </div>
+    </section>
+
+   

@@ -2,7 +2,7 @@
 router.get('/', function(req, res, next) {
  
 
-  staffHelper.getDepartmentDetails(1)
+  advisorHelper.getDepartmentDetails(1)
     .then((department) => {
       // Render the view with the department details
       // res.render('department', { department: department });

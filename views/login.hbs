@@ -1,65 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Page</title>
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<style>
-    body {
-        /* Default background color */
-        background-color: #007bff; /* Blue background */
-    }
-    .background-image {
-        /* Background image properties */
-        background-image: url('https://picfiles.alphacoders.com/292/thumb-1920-292563.jpg'); /* Replace 'your-background-image-url.jpg' with your actual image URL */
-        background-size: cover;
-        background-position: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1; /* Place behind other content */
-    }
-    .container {
-        background-color: rgba(255, 255, 255, 0.8); /* White container background with transparency */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
-        padding: 20px;
-        margin: auto;
-        margin-top: 100px; /* Center vertically */
-        max-width: 400px;
-        animation: fadeInAnimation 1s ease;
-    }
-    @keyframes fadeInAnimation {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-    h1 {
-        color: #007bff; /* Blue header text */
-        margin-top: 0;
-        text-align: center;
-    }
-    .btn {
-        width: 100%;
-        margin-top: 20px;
-        animation: fadeInAnimation 1s ease;
-    }
-</style>
-</head>
-<body>
+ <header class="bg-success" style="position: fixed; width: 100%; z-index: 1;">
+        <div class="row text-white">
+            <div class="col-md-6 col-9 p-4 pl-5">
+                <a href="/" style="text-decoration: none; color: aliceblue;"><h1><i>LoginPortal</i></h1></a>
+            </div>
+        </div>
+    </header>
+<section id="sign_in-section" style="padding-top: 8em;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg rounded">
+                    <div class="card-header text-center bg-primary text-white">
+                        <h2 class="mb-0">LOGIN</h2>
+                    </div>
+                    <div class="card-body bg-light p-5">
+                        <form action="/" method="post" enctype="application/x-www-form-urlencoded">
+                            <div class="form-group">
+                                <label for="exampleInputName1">UserID</label>
+                                <input type="text" class="form-control" id="exampleInputName1" name="userid" placeholder="Enter UserID">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Password</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<div class="background-image"></div>
-
-<div class="container">
-    <h1><i>Login</i></h1>
-    <hr>
-    <a href="/staff/login" class="btn btn-primary"><i>Staff Login</i></a>
-    <a href="/faculty/login" class="btn btn-primary"><i>Faculty Login</i></a>
-    <a href="/admin/login" class="btn btn-primary"><i>Admin Login</i></a>
-</div>
-
-</body>
-</html>

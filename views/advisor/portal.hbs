@@ -1,0 +1,52 @@
+
+    <section id="sign_in-section" style="padding-top: 12em;">
+        <div class="container">
+            <div><h1 class="text-center">STUDENT DETAILS</h1></div><hr>
+            <div class="row m-5">
+              <!-- portal.hbs -->
+
+<form action="/advisor/searchStudents" method="GET">
+    <div class="row">
+        <div class="col">
+            <label><i>SEARCH :</i></label>
+        </div>
+        <div class="col">
+            <input type="text" name="query" style="border-width: 5px solid; border-radius: 6px;" placeholder="Enter student name">
+            <button type="submit">Search</button>
+        </div>
+    </div>
+</form>
+  
+            </div>
+            <div class="row">
+                <div class="col-md-9 col-12">
+                    <div class="table">
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+
+                                  
+                              <tr>
+                                <th scope="col">ROLL NO</th>
+                                <th scope="col">NAME</th>
+                                <th scope="col">DEPT</th>
+                                <th scope="col">SEM</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {{#each allStudents.details}}
+                              <tr>
+                                <th scope="row">{{this.id}}</th>
+                                <td>{{this.student_name}}</td>
+                               <td>{{this.department_id}}</td>
+                                <td>{{this.semester_id}}</td>
+                                
+                              </tr>
+                             {{/each}}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+            </div>
+              
+        </div>
+    </section>

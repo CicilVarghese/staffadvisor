@@ -6,12 +6,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const db = require('./db/database');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
-
-
-
-
-var staffRouter = require('./routes/staff');
+var advisorRouter = require('./routes/advisor');
 var adminRouter = require('./routes/admin');
 var facultyRouter = require('./routes/faculty');
 var homeRouter = require('./routes/home');
@@ -23,8 +20,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('hbs', hbs.engine({
   extname: 'hbs',
   defaultLayout: 'layout',
-    layoutsDir: __dirname + '/views/layouts/',
-    partialsDir: __dirname + '/views/partials/'
+  layoutsDir: __dirname + '/views/layouts/',
+  partialsDir: __dirname + '/views/partials/'
 }));
 
 // Set Handlebars as the default view engine
@@ -40,11 +37,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin', adminRouter);
-app.use('/staff', staffRouter);
-app.use('/faculty', facultyRouter);
-app.use('/', homeRouter);
+app.use(session({secret:"Key",cookie:{maxAge:60000}}))
 
+// Apply verifyLogin middleware to protected routes
+app.use('/admin', adminRouter);
+app.use('/advisor', advisorRouter);
+app.use('/faculty', facultyRouter);
+app.use('/', homeRouter.router);
+app.use(homeRouter.verifyLogin); // Applying verifyLogin middleware globally
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
