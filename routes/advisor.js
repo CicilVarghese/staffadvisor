@@ -13,7 +13,6 @@ router.get('/', verifyLogin,  async function(req, res, next) {
   try {
       const advisorData = await advisorHelper.getAdvisorData(req.session.user);
       const allStudents =await advisorHelper.getAllStudents(req.session.user);
-      console.log(allStudents);
       res.render('advisor/portal', { Advisor: true, user: advisorData.details,allStudents});
   } catch (err) {
       console.error("Error:", err);
@@ -23,26 +22,43 @@ router.get('/', verifyLogin,  async function(req, res, next) {
 
 
 
+// advisor.js
 router.get('/searchStudents', verifyLogin, async function(req, res, next) {
-    try {
-        const searchText = req.query.query;
-        const advisorData = await advisorHelper.getAdvisorData(req.session.user);
-        const allStudents = await advisorHelper.searchStudents(req.session.user, searchText);
-        res.render('advisor/portal', { Advisor: true, user: advisorData.details, allStudents });
-    } catch (err) {
-        console.error("Error:", err);
-        res.status(500).send("An error occurred.");
-    }
+  try {
+      const searchText = req.query.query;
+      const advisorData = await advisorHelper.getAdvisorData(req.session.user);
+      const allStudents = await advisorHelper.searchStudents(req.session.user, searchText);
+      res.json(allStudents); // Return JSON response
+  } catch (err) {
+      console.error("Error:", err);
+      res.status(500).send("An error occurred.");
+  }
 });
 
 
 
-router.get('/getMarks', verifyLogin, function(req, res, next) {
-  res.render('advisor/marks', { Advisor: true, user: req.session.user });
+
+router.get('/getMarks', verifyLogin, async function(req, res, next) {
+  try {
+    const advisorData = await advisorHelper.getAdvisorData(req.session.user);
+    const allStudents =await advisorHelper.getAllStudentsByMarks(req.session.user);
+    res.render('advisor/marks', { Advisor: true, user: req.session.user,allStudents });} catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("An error occurred.");
+}
+  
+ 
 });
 
-router.get('/getAttendance', verifyLogin, function(req, res, next) {
-  res.render('advisor/attendance', { Advisor: true, user: req.session.user });
+router.get('/getAttendance', verifyLogin,async function(req, res, next) {
+  try {
+    const advisorData = await advisorHelper.getAdvisorData(req.session.user);
+    const allStudents =await advisorHelper.getAllStudentsByMarks(req.session.user);
+    res.render('advisor/attendance', { Advisor: true, user: req.session.user,allStudents });} catch (err) {
+    console.error("Error:", err);
+    res.status(500).send("An error occurred.");
+}
+  
 });
 
 module.exports = router;

@@ -14,9 +14,30 @@ const verifyLogin = (req, res, next) => {
      res.redirect('/');
   }
 };
- 
+ //login
 router.get('/', function(req, res, next) {
-res.render('login')
+
+  
+    if(req.session.loggedIn){
+
+
+      if(req.session.user.role=="advisor")
+        res.redirect('/advisor');
+
+  else  if(req.session.user.role=="faculty")
+           res.redirect('/faculty'); 
+          
+  else  if(req.session.user.role=="admin")
+            res.redirect('/admin');
+
+    } 
+   
+
+  else{
+    res.render('login',{loginErr: req.session.loginErr})
+    req.session.loginErr=false;
+  }
+
 });
 
 router.post('/', (req, res) => {
@@ -25,7 +46,6 @@ router.post('/', (req, res) => {
        req.session.loggedIn = true;
        req.session.user = response.user;
        user = req.session.user ;
-
        if(req.session.user.role=="advisor")
              res.redirect('/advisor');
 
@@ -36,7 +56,8 @@ router.post('/', (req, res) => {
                  res.redirect('/admin');
 
      } else {
-       res.render('login');
+      req.session.loginErr= true;
+       res.redirect('login');
      }
   });
  });

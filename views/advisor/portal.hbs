@@ -1,22 +1,26 @@
 
+
     <section id="sign_in-section" style="padding-top: 12em;">
         <div class="container">
             <div><h1 class="text-center">STUDENT DETAILS</h1></div><hr>
             <div class="row m-5">
               <!-- portal.hbs -->
 
-<form action="/advisor/searchStudents" method="GET">
+<!-- portal.hbs -->
+
+<form  action="/advisor/searchStudents" method="GET" id="searchForm" >
     <div class="row">
         <div class="col">
             <label><i>SEARCH :</i></label>
         </div>
         <div class="col">
-            <input type="text" name="query" style="border-width: 5px solid; border-radius: 6px;" placeholder="Enter student name">
-            <button type="submit">Search</button>
+            <input type="text" id="searchInput" style="border-width: 5px solid; border-radius: 6px;" placeholder="Enter student name">
+            <button type="submit" id="searchBtn">Search</button>
         </div>
     </div>
 </form>
-  
+
+
             </div>
             <div class="row">
                 <div class="col-md-9 col-12">
@@ -50,3 +54,4 @@
               
         </div>
     </section>
+
