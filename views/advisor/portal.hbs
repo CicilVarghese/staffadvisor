@@ -8,14 +8,14 @@
 
 <!-- portal.hbs -->
 
-<form  action="/advisor/searchStudents" method="GET" id="searchForm" >
+<form id="searchForm">
     <div class="row">
         <div class="col">
             <label><i>SEARCH :</i></label>
         </div>
         <div class="col">
             <input type="text" id="searchInput" style="border-width: 5px solid; border-radius: 6px;" placeholder="Enter student name">
-            <button type="submit" id="searchBtn">Search</button>
+            <button type="button" id="searchBtn">Search</button>
         </div>
     </div>
 </form>
@@ -55,3 +55,37 @@
         </div>
     </section>
 
+<script>
+    // JavaScript code to handle form submission and AJAX request
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        var searchText = document.getElementById('searchInput').value;
+        searchStudents(searchText);
+    });
+
+    function searchStudents(searchText) {
+        // AJAX request to searchStudents route
+        fetch('/advisor/searchStudents?query=' + searchText)
+            .then(response => response.json())
+            .then(data => {
+                // Update table with search results
+                updateTable(data.details);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateTable(students) {
+        var tbody = document.querySelector('table tbody');
+        tbody.innerHTML = ''; // Clear existing table rows
+
+        students.forEach(function(student) {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+                <th scope="row">${student.id}</th>
+                <td>${student.student_name}</td>
+                <td>${student.department_id}</td>
+                <td>${student.semester_id}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+</script>

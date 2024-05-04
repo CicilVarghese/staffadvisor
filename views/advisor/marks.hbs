@@ -1,64 +1,98 @@
-
-    <section id="sign_in-section" style="padding-top: 13em;">
-        <div class="container">
-            <div>
-                <h1 class="text-left">STUDENT MARKS</h1>
-            </div>
-            <hr>
-            <div class="row m-5">
-                <form>
+<section id="sign_in-section" style="padding-top: 13em;">
+    <div class="container">
+        <div>
+            <h1 class="text-left">STUDENT MARKS</h1>
+        </div>
+        <hr>
+        <div class="row m-5">
+            <form id="searchForm">
+                <div class="row">
+                    <div class="col">
+                        <label><i>COURSE :</i></label>
+                    </div>
+                    <div class="col">
+                        <!-- Dropdown for selecting courses -->
+                        <select id="courseSelect" style="border-width: 5px solid; border-radius: 6px;">
+                            <option value="">Select a course</option>
+                            <!-- Add options dynamically based on courses data -->
+                            {{#each courses}}
+                            <option value="{{this.course_id}}">{{this.course_name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
                     <div class="row">
                         <div class="col">
-                            <label><i>COURSE :</i></label>
+                            <label><i>SEARCH :</i></label>
                         </div>
                         <div class="col">
-                            <input type="text" style="border-width: 5px solid; border-radius: 6px;">
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <label><i>SEARCH :</i></label>
-                            </div>
-                            <div class="col">
-                                <input type="text" style="border-width: 5px solid; border-radius: 6px;" placeholder="Students">
-                            </div>
+                            <input type="text" id="searchInput" style="border-width: 5px solid; border-radius: 6px;" placeholder="Students">
+                            <button type="button" id="searchBtn">Search</button>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="row">
-                <div class="col-md-9 col-12">
-                    <div class="table">
-                        <table class="table table-bordered">
-                            <thead class="thead-dark">
-                                <tr>
-                                     <th scope="col">REG.NO</th>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-md-9 col-12">
+                <div class="table">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">REG.NO</th>
                                 <th scope="col">NAME</th>
                                 <th scope="col">DEPT</th>
                                 <th scope="col">SEM</th>
                                 <th scope="col">COURSE</th>
                                 <th scope="col">INTERNAL</th>
-                               
-                                </tr>
-                            </thead>
-                            <tbody>
-                                     {{#each allStudents.details}}
-                                 <tr>
-                                <th scope="row">{{this.student_id}}</th>
-                                <td>{{this.student_name}}</td>
-                                <td>{{this.department_id}}</td>
-                                <td>{{this.semester_id}}</td>
-                                <td>{{this.course_name}}</td>
-                                <td>{{this.total_marks}}</td>
-                                <td>{{this.attendance_percentage}}</td>
-                              </tr>
-                              {{/each}}
-                               
-                            </tbody>
-                        </table>
-                    </div>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Table body content will be filled dynamically -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
-
         </div>
-    </section>
-  
+    </div>
+</section>
+
+<script>
+    // JavaScript code to handle form submission and AJAX request
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        var courseId = document.getElementById('courseSelect').value;
+        var searchText = document.getElementById('searchInput').value;
+        var advisorId = '{{user.userid}}'; // Assuming user object contains the advisor ID
+        searchStudentsByCourse(courseId, searchText, advisorId);
+    });
+
+    function searchStudentsByCourse(courseId, searchText, advisorId) {
+        // AJAX request to searchStudents route
+       // AJAX request to searchStudents route
+fetch(`/advisor/searchStudentsByCourse?courseId=${courseId}&query=${searchText}&advisorId=${advisorId}`)
+    .then(response => response.json())
+    .then(data => {
+        // Update table with search results
+        updateTable(data.details);
+    })
+    .catch(error => console.error('Error:', error));
+
+    }
+
+    function updateTable(students) {
+        var tbody = document.getElementById('studentsTableBody');
+        tbody.innerHTML = ''; // Clear existing table rows
+
+        students.forEach(function(student) {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+                <th scope="row">${student.student_id}</th>
+                <td>${student.student_name}</td>
+                <td>${student.department_id}</td>
+                <td>${student.semester_id}</td>
+                <td>${student.course_name}</td>
+                <td>${student.total_marks}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+</script>
