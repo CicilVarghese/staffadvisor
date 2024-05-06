@@ -48,6 +48,16 @@
                         </thead>
                         <tbody id="studentsTableBody">
                             <!-- Table body content will be filled dynamically -->
+                             {{#each allStudents.details}}
+                                 <tr style="color: {{#if (totalMarksLessThan45 total_marks)}} red {{else}} green {{/if}}">
+                                    <th scope="row">{{this.student_id}}</th>
+                                    <td>{{this.student_name}}</td>
+                                    <td>{{this.department_id}}</td>
+                                    <td>{{this.semester_id}}</td>
+                                    <td>{{this.course_name}}</td>
+                                    <td>{{this.total_marks}}</td>
+                              </tr>
+                              {{/each}}
                         </tbody>
                     </table>
                 </div>

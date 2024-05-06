@@ -1,31 +1,57 @@
 
-    <section id="sign_in-section" style="padding-top: 12em;">
-        <div class="container">
-            <div><h1 class="text-center">STUDENT DETAILS</h1></div><hr>
-            <div class="row">
-                <div class="col-md-3 mt-3">
-                    <label for="exampleInputName1"><i>DEPT_NAME</i></label>
-                    <input type="text" class="form-control" id="exampleInputName1">
-                </div>
-                <div class="col-md-3 mt-3">
-                    <label for="exampleInputName1"><i>SEMESTER</i></label>
-                    <input type="text" class="form-control" id="exampleInputName1">
-                </div>
-                <div class="col-md-3 mt-3">
-                    <label for="exampleInputName1"><i>COURSE</i></label>
-                    <input type="text" class="form-control" id="exampleInputName1">
-                </div>
-                <div class="col-md-3 mt-3">
-                    <label for="exampleInputName1"><i>SEARCH STUDENT</i></label>
-                    <input type="text" class="form-control" id="exampleInputName1">
-                </div>
+
+<section id="sign_in-section" style="padding-top: 12em;">
+    <div class="container">
+        <div>
+            <h1 class="text-center">STUDENT DETAILS</h1>
+        </div>
+        <hr>
+        <div class="row">
+             <form id="searchForm"></form>
+            <div class="col-md-3 mt-3">
+                <label for="deptInput"><i>DEPT_NAME</i></label>
+                <select id="deptSelect" style="border-width: 5px solid; border-radius: 6px;">
+                            <option value="">Select a department</option>
+                            <!-- Add options dynamically based on courses data -->
+                            {{#each departments}}
+                            <option value="{{this.department_id}}">{{this.department_name}}</option>
+                            {{/each}}
+
+                        </select>
             </div>
-            <div class="row">
-                <div class="col-md-12 col-9">
-                    <div class="table mt-5">
-                        <table class="table table-bordered">
-                            <thead class="thead-dark">
-                              <tr>
+            <div class="col-md-3 mt-3">
+                <label for="semInput"><i>SEMESTER</i></label>
+ <select id="semSelect" style="border-width: 5px solid; border-radius: 6px;">
+                            <option value="">Select a semester</option>
+                            <!-- Add options dynamically based on courses data -->
+                            {{#each semesters}}
+                            <option value="{{this.semester_id}}">{{this.semester_name}}</option>
+                            {{/each}}
+
+                        </select>            </div>
+            <div class="col-md-3 mt-3">
+                <label for="courseInput"><i>COURSE</i></label>
+ <select id="courseSelect" style="border-width: 5px solid; border-radius: 6px;">
+                            <option value="">Select a course</option>
+                            <!-- Add options dynamically based on courses data -->
+                            {{#each courses}}
+                            <option value="{{this.course_id}}">{{this.course_name}}</option>
+                            {{/each}}
+
+                        </select>            </div>
+            <div class="col-md-3 mt-3">
+                <label for="searchInput"><i>SEARCH STUDENT</i></label>
+                <input type="text" class="form-control" id="searchInput" placeholder="Enter student name">
+                <button type="button" class="btn btn-primary mt-2" id="searchBtn">Search</button>
+            </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-9">
+                <div class="table mt-5">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
                                 <th scope="col">REG.NO</th>
                                 <th scope="col">NAME</th>
                                 <th scope="col">DEPT</th>
@@ -33,11 +59,11 @@
                                 <th scope="col">COURSE</th>
                                 <th scope="col">INTERNAL</th>
                                 <th scope="col">ATTENDANCE</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {{#each allStudents.details}}
-                              <tr>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            {{#each allStudents.details}}
+                            <tr>
                                 <th scope="row">{{this.student_id}}</th>
                                 <td>{{this.student_name}}</td>
                                 <td>{{this.department_id}}</td>
@@ -45,16 +71,55 @@
                                 <td>{{this.course_name}}</td>
                                 <td>{{this.total_marks}}</td>
                                 <td>{{this.attendance}}</td>
-                              </tr>
-                              {{/each}}
-                             
-                            </tbody>
-                          </table>
-                    </div>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-              
         </div>
-    </section>
+    </div>
+</section>
 
-   
+<script>
+    // JavaScript code to handle form submission and AJAX request
+    document.getElementById('searchBtn').addEventListener('click', function() {
+       var deptId= document.getElementById('deptSelect').value;
+       var semId = document.getElementById('semSelect').value;
+        var courseId = document.getElementById('courseSelect').value;
+        var searchText = document.getElementById('searchInput').value;
+       var facultyId = '{{user.userid}}';
+        searchStudents(deptId,semId,courseId,searchText,facultyId);
+    });
+
+    function searchStudents(deptId,semId,courseId,searchText,facultyId) {
+        // AJAX request to searchStudents route
+        console.log(facultyId)
+fetch(`/faculty/searchStudents?deptId=${deptId}&semId=${semId}&courseId=${courseId}&query=${searchText}&facultyId=${facultyId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update table with search results
+                updateTable(data.details);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateTable(students) {
+        var tbody = document.getElementById('studentsTableBody');
+        tbody.innerHTML = ''; // Clear existing table rows
+
+        students.forEach(function(student) {
+            var row = document.createElement('tr');
+            row.innerHTML = `
+                <th scope="row">${student.student_id}</th>
+                <td>${student.student_name}</td>
+                <td>${student.department_id}</td>
+                <td>${student.semester_id}</td>
+                <td>${student.course_name}</td>
+                <td>${student.total_marks}</td>
+                <td>${student.attendance_percentage}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+</script>

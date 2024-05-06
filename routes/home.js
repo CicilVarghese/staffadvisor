@@ -42,25 +42,28 @@ router.get('/', function(req, res, next) {
 
 router.post('/', (req, res) => {
   loginHelper.doLogin(req.body).then((response) => {
-     if (response.status) {
-       req.session.loggedIn = true;
-       req.session.user = response.user;
-       user = req.session.user ;
-       if(req.session.user.role=="advisor")
-             res.redirect('/advisor');
-
-       else  if(req.session.user.role=="faculty")
-                res.redirect('/faculty'); 
-               
-       else  if(req.session.user.role=="admin")
-                 res.redirect('/admin');
-
-     } else {
-      req.session.loginErr= true;
-       res.redirect('login');
-     }
+      if (response.status) {
+          req.session.loggedIn = true;
+          req.session.user = response.user;
+          // Extract user roles and store them in the session
+          console.log("Response:", response);
+          console.log("User:", response.user);
+          console.log("Roles:", response.user.roles);
+          req.session.userRoles = response.user.roles; // Ensure correct assignment here
+     
+          if(req.session.userRoles.includes("advisor"))
+              res.redirect('/advisor');
+          else if(req.session.userRoles.includes("faculty"))
+              res.redirect('/faculty'); 
+          else if(req.session.userRoles.includes("admin"))
+              res.redirect('/admin');
+      } else {
+          req.session.loginErr = true;
+          res.redirect('login');
+      }
   });
- });
+});
+
 
  router.get('/logout',(req,res)=>{
    req.session.destroy()

@@ -22,8 +22,19 @@ router.get('/',verifyLogin, async function(req, res, next) {
         res.status(500).send("An error occurred.");
     }
 });
+router.get('/addAdvisor',verifyLogin, async function(req, res, next) {
+    const adminData = await adminHelper.getAdminData(req.session.user);
+    const allAdvisors = await adminHelper.getAllAdvisors();
+        res.render('admin/addAdvisor', { Admin: true, user: adminData.details, allAdvisors});
 
+});
 
+router.get('/addFaculty',verifyLogin, async function(req, res, next) {
+    const adminData = await adminHelper.getAdminData(req.session.user);
+    const allFaculties =await adminHelper.getAllFaculties();
+        res.render('admin/addFaculty', { Admin: true, user: adminData.details, allFaculties});
+
+});
 
 
 

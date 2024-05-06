@@ -8,7 +8,7 @@
             <form id="searchForm">
                 <div class="row">
                     <div class="col">
-                        <label><i>COURSE :</i></label>
+                        <label><i>COURSE*:</i></label>
                     </div>
                     <div class="col">
                         <!-- Dropdown for selecting courses -->
@@ -48,6 +48,18 @@
                                 </tr>
                             </thead>
   <tbody id="studentsTableBody">
+     {{#each allStudents.details}}
+                                 <tr>
+                                <th scope="row">{{this.student_id}}</th>
+                                <td>{{this.student_name}}</td>
+                                <td>{{this.department_id}}</td>
+                                <td>{{this.semester_id}}</td>
+                                <td>{{this.course_name}}</td>
+                                <td>{{this.attendance_percentage}}</td>
+        
+                              </tr>
+                              {{/each}}
+                               
                             <!-- Table body content will be filled dynamically -->
                         </tbody>
                         </table>
