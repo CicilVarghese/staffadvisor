@@ -96,8 +96,8 @@ function searchStudentsByCourse(courseId, searchText, advisorId) {
       LEFT JOIN courses c ON sc.course_id = c.id AND c.semester_id = s.semester_id 
       LEFT JOIN internal_marks im ON s.id = im.student_id AND im.course_id = c.id 
       LEFT JOIN attendance att ON s.id = att.student_id AND att.course_id = c.id 
-      WHERE sem.advisor_id = ? AND c.id = ? AND (s.student_name LIKE ? OR s.id LIKE ?);`;
-  const values = [advisorId, courseId, `%${searchText}%`, `%${searchText}%`];
+      WHERE sem.advisor_id = ? AND c.id LIKE ? AND (s.student_name LIKE ? OR s.id LIKE ?);`;
+  const values = [advisorId, `%${courseId}%`, `%${searchText}%`, `%${searchText}%`];
   return new Promise((resolve, reject) => {
       query(sql, values)
           .then(({ results }) => {
@@ -133,22 +133,3 @@ function getAllCourses(data) {
 module.exports = {
    getAdvisorData,getAllStudents,getAllStudentsByMarks,searchStudents,getAllCourses,searchStudentsByCourse
 };
-// function searchStudents(user, searchText) {
-//   const sql = `SELECT * FROM students WHERE semester_id=(SELECT semester_id FROM advisors WHERE user_id=?) AND student_name LIKE ?`;
-//   const values = [user.userid, `%${searchText}%`];
-//   return new Promise((resolve,reject)=>{
-//     query(sql,values)
-//       .then(({results})=>{
-//         console.log("Executing Query:",sql,values)
-//         console.log("searchtext:", results);
-//         if(results.length){
-//             resolve({details:results});
-            
-//         }
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching user from database:", error);
-//         reject(error);
-//     });
-// })
-// }
