@@ -38,7 +38,8 @@
                             </thead>
                             <tbody>
                               {{#each allStudents.details}}
-                              <tr>
+                                                                                         <tr style="background-color:#f1f0ee;">
+
                                 <th scope="row">{{this.id}}</th>
                                 <td>{{this.student_name}}</td>
                                <td>{{this.department_id}}</td>
@@ -79,6 +80,7 @@
 
         students.forEach(function(student) {
             var row = document.createElement('tr');
+             row.style.backgroundColor = `#f1f0ee`;
             row.innerHTML = `
                 <th scope="row">${student.id}</th>
                 <td>${student.student_name}</td>

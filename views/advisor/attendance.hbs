@@ -49,7 +49,8 @@
                             </thead>
   <tbody id="studentsTableBody">
      {{#each allStudents.details}}
-                                 <tr>
+                                                                  <tr style="color: {{conditionalAttendance this.attendance_percentage}};background-color:#f1f0ee;">
+
                                 <th scope="row">{{this.student_id}}</th>
                                 <td>{{this.student_name}}</td>
                                 <td>{{this.department_id}}</td>
@@ -98,6 +99,9 @@ fetch(`/advisor/searchStudentsByCourse?courseId=${courseId}&query=${searchText}&
 
         students.forEach(function(student) {
             var row = document.createElement('tr');
+                    var color = student.attendance_percentage < 80? 'red' : 'green'; // Default to green if not specified
+                row.style.backgroundColor = `#f1f0ee`;
+        row.style.color = color; 
             row.innerHTML = `
                 <th scope="row">${student.student_id}</th>
                 <td>${student.student_name}</td>

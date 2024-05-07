@@ -49,7 +49,9 @@
                         <tbody id="studentsTableBody">
                             <!-- Table body content will be filled dynamically -->
                              {{#each allStudents.details}}
-                                 <tr style="color: {{#if (totalMarksLessThan45 total_marks)}} red {{else}} green {{/if}}">
+                            {{!--                                  <tr style="background-color: {{conditionalColor this.total_marks}}">--}}
+                                 <tr style="color: {{conditionalColor this.total_marks}};background-color:#f1f0ee;">
+                            
                                     <th scope="row">{{this.student_id}}</th>
                                     <td>{{this.student_name}}</td>
                                     <td>{{this.department_id}}</td>
@@ -88,21 +90,27 @@ fetch(`/advisor/searchStudentsByCourse?courseId=${courseId}&query=${searchText}&
 
     }
 
-    function updateTable(students) {
-        var tbody = document.getElementById('studentsTableBody');
-        tbody.innerHTML = ''; // Clear existing table rows
+  function updateTable(students) {
+    var tbody = document.getElementById('studentsTableBody');
+    tbody.innerHTML = ''; // Clear existing table rows
 
-        students.forEach(function(student) {
-            var row = document.createElement('tr');
-            row.innerHTML = `
-                <th scope="row">${student.student_id}</th>
-                <td>${student.student_name}</td>
-                <td>${student.department_id}</td>
-                <td>${student.semester_id}</td>
-                <td>${student.course_name}</td>
-                <td>${student.total_marks}</td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
+    students.forEach(function(student) {
+        var row = document.createElement('tr');
+        // Determine the color based on total_marks
+        var color = student.total_marks < 45? 'red' : 'green'; // Default to green if not specified
+        row.style.backgroundColor = `#f1f0ee`;
+        row.style.color = color; 
+        // Apply the color to the text inside the row
+        row.innerHTML = `
+            <th scope="row">${student.student_id}</th>
+            <td>${student.student_name}</td>
+            <td>${student.department_id}</td>
+            <td>${student.semester_id}</td>
+            <td>${student.course_name}</td>
+            <td>${student.total_marks}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
 </script>

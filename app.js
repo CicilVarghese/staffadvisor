@@ -21,7 +21,16 @@ app.engine('hbs', hbs.engine({
   extname: 'hbs',
   defaultLayout: 'layout',
   layoutsDir: __dirname + '/views/layouts/',
-  partialsDir: __dirname + '/views/partials/'
+  partialsDir: __dirname + '/views/partials/',
+  helpers: {
+    conditionalColor: function(totalMarks) {
+      return totalMarks < 45? 'red' : 'green';
+    },
+    conditionalAttendance: function(totalAttendance) {
+      return totalAttendance < 80? 'red' : 'green';
+    }
+  }
+
 }));
 
 // Set Handlebars as the default view engine
