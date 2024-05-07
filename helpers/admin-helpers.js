@@ -44,7 +44,7 @@ function getAllAdvisors(){
     
 
       function getAllFaculties(){
-        const sql = "SELECT * FROM faculty"
+        const sql = "SELECT f.user_id AS user_id, f.name AS name, f.department_id AS department, GROUP_CONCAT(c.id ORDER BY c.id SEPARATOR ', ') AS course_ids FROM faculty f JOIN courses c ON f.user_id = c.faculty_id GROUP BY f.user_id, f.name, f.department_id;        "
         return new Promise((resolve,reject)=>{
           query(sql)
             .then(({results})=>{
